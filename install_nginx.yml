@@ -2,7 +2,7 @@
 
 - hosts: my_servers
   become: true
-  pre-tasks:
+  tasks:
   
   - name: Update Index
     apt:
