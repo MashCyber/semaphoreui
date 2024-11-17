@@ -1,6 +1,6 @@
 ---
 
-- hosts: all
+- hosts: my_servers
   become: true
   tasks:
 
