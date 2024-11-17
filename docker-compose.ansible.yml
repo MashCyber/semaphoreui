@@ -3,7 +3,7 @@ services:
     image: tjmash/ubnt:jammy
     container_name: test-host
     ports:
-      - 2222:22
+      - 22:22
     tty: true
     volumes:
       - ./ansible-keys:/app/data/ansible-keys
