@@ -1,0 +1,87 @@
+=======================================================
+# STEP.1
+## Install postgres db docker compose 
+
+services:
+  postgres:
+    restart: unless-stopped
+    image: postgres:14
+    hostname: postgres
+    volumes: 
+     - semaphore-postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+     POSTGRES_USER: ${SEMAPHORE_DB_USER} # grab content from .env
+     POSTGRES_PASSWORD: ${SEMAPHORE_DB_PASS}
+     POSTGRES_DB: ${SEMAPHORE_DB}
+    networks:
+      - semaui-net
+volumes:
+  semaphore-postgres:
+
+networks:
+  semaui-net:
+    driver: bridge
+=======================================================
+# STEP.2
+## Install latest release semaphore
+
+sudo wget https://github.com/semaphoreui/semaphore/releases/download/v2.10.35/semaphore_2.10.35_linux_amd64.deb
+sudo apt install ./sema--.deb
+
+==> run steps with postgres in-line
+
+
+=======================================================
+# STEP.3
+## Create semaphore user 
+
+adduser --system --group --home /home/semaphore semaphore
+
+=======================================================
+# STEP.4
+## Create /etc/semaphore/
+## chown simone:simone -R /etc/semaphore
+
+## COPY config file to correct dir
+# cp config.json /etc/semaphore
+
+
+=======================================================
+# STEP.5
+
+## Create systemd daemon
+
+$ nano /etc/systemd/system/semaphore.service
+
+'''
+[Unit]
+Description= Ansible Semaphore
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=/usr/bin/semaphore
+ConditionPathExists=/etc/semaphore/config.json
+
+[Service]
+ExecStart=/usr/bin/semaphore server --config /etc/semaphore/config.json
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10s
+User=semaphore
+Group=semaphore
+
+[Install]
+WantedBy=multi-user.target
+'''
+
+systemctl daemon-reload && \
+systemctl enable semaphore.service && \
+systemctl start semaphore.service && \
+systemctl status semaphore.service
+
+=======================================================
+# STEP.6
+## Login to semaphore UI and continue to create projects
+
+## PS: Link your repo with ssh key enabled.
