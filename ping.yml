@@ -7,5 +7,4 @@
   - name: Test end-to-end
     tags: pingpong
     ping:
-      data: "ping"
   
