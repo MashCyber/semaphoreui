@@ -1,10 +1,11 @@
 ---
 
-- hosts: my_servers
+- hosts: all
   become: true
   tasks:
 
   - name: Test end-to-end
     tags: pingpong
     ping:
+      data: "ping"
   
