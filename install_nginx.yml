@@ -1,0 +1,22 @@
+---
+
+- hosts: my_servers
+  become: true
+  pre-tasks:
+  
+  - name: Update Index
+    apt:
+      update_cache: yes
+      
+- hosts: my_servers
+  become: true
+  tasks:
+  
+  - name: Install nginx
+    package:
+      name: nginx
+      state: latest
+  - name: Upgrade distro
+    apt:
+      upgrade: dist
+      only_update: yes
