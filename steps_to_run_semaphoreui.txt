@@ -44,16 +44,30 @@ adduser --system --group --home /home/semaphore semaphore
 ## Create /etc/semaphore/
 ## chown simone:simone -R /etc/semaphore
 
+=======================================================
+# STEP.5
+## Create semaphore config file
+
+# semaphore setup [ENTER]
+
+$ db_hostname == localhost:5432
+$ db_user == $SEMAPHORE_DB_USER
+$ db_passowrd == $SEMAPHORE_DB_PASS
+$ db_name == $SEMAPHORE_DB
+$ Playbook_Path == default
+$ Public_URL == default
+$ Rest == NO
+$ Output dir == default
+
 ## COPY config file to correct dir
 # cp config.json /etc/semaphore
 
-
 =======================================================
-# STEP.5
+# STEP.6
 
 ## Create systemd daemon
 
-$ nano /etc/systemd/system/semaphore.service
+$ nano /etc/systemd/system/semaphore.service  [ENTER]
 
 '''
 [Unit]
